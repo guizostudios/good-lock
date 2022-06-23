@@ -24,7 +24,7 @@ contract ContractPool {
     struct Contract {
         address payable owner;
         address payable taker;
-        string contractname;
+        string name;
         string token;
         uint balanceowner;
         uint balancetaker;
@@ -33,19 +33,23 @@ contract ContractPool {
         uint agreementtaker;
         uint daystowithdraw;
         uint daystodeposit;
+        uint deposit;
+        uint withdraw;
         uint256 enddate;
     }
 
     mapping (uint => Contract) internal contracts;
 
     function writeContract(
-        string memory _contractname,
+        string memory _name,
         string memory _token,
         uint _preagreementowner,
         uint _preagreementtaker,
         uint _agreementtaker,
         uint _daystowithdraw,
         uint _daystodeposit,
+        uint _deposit,
+        uint _withdraw,
         uint256 _enddate
 
     ) public {
@@ -54,7 +58,7 @@ contract ContractPool {
         contracts[contractsLength] = Contract(
             payable(msg.owner),
             payable(msg.taker),
-        _contractname,
+        _name,
         _token,
         _preagreementowner,
         _preagreementtaker,
@@ -63,7 +67,9 @@ contract ContractPool {
         _daystodeposit,
         _enddate,
         _balanceowner,
-        _balancetaker
+        _balancetaker,
+        _deposit,
+        _withdraw,
 
         );
         contractsLength++;
@@ -81,12 +87,14 @@ contract ContractPool {
         uint,
         uint,
         uint,
+        uint,
+        uint,
         uint256
     ) {
         return (
             contracts[_index].owner,
             contracts[_index].taker, 
-            contracts[_index].contractname, 
+            contracts[_index].name, 
             contracts[_index].token, 
             contracts[_index].balanceowner, 
             contracts[_index].balancetaker,
@@ -95,33 +103,40 @@ contract ContractPool {
             contracts[_index].agreementtaker, 
             contracts[_index].daystowithdraw,
             contracts[_index].daystodeposit,
+            contracts[_index].deposit,
+            contracts[_index].withdraw,
             contracts[_index].enddate
         );
     }
 
-    function buyContract(uint _index) public payable  {
-        require(
-          IERC20Token(cUsdTokenAddress).transferFrom(
-            msg.sender,
-            contracts[_index].owner,
-            contracts[_index].price
-          ),
-          "Transfer failed."
-        );
-        contracts[_index].sold++;
-    }
-    
+   
     function getContractsLength() public view returns (uint) {
         return (contractsLength);
     }
 
-    function addContract
+    function ownerdepositContract(uint _index) public payable  {
+        require(
+          IERC20Token(token).transferFrom(
+            msg.owner,
+            contracts[_index].owner,
+            contracts[_index].deposit
+          ),
+          "Transfer failed."
+        );
+        contracts[_index].balanceowner = contracts[_index].balanceowner +  contracts[_index].deposit ;
+    }
 
-    function withdrawContract
+        function takerdepositContract(uint _index) public payable  {
+        require(
+          IERC20Token(token).transferFrom(
+            msg.taker,
+            contracts[_index].taker,
+            contracts[_index].deposit
+          ),
+          "Transfer failed."
+        );
+        contracts[_index].balancetaker =    contracts[_index].balancetaker + contracts[_index].deposit;
+    }
 
-    function burnContract
 
-    function changeContract
-
-    function execContract
 }
