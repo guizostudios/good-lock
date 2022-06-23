@@ -39,42 +39,63 @@ contract ContractPool {
     mapping (uint => Contract) internal contracts;
 
     function writeContract(
-        string memory _name,
-        string memory _image,
-        string memory _description, 
-        string memory _location, 
-        uint _price
+        string memory _contractname,
+        string memory _token,
+        uint _preagreementowner,
+        uint _preagreementtaker,
+        uint _agreementtaker,
+        uint _daystowithdraw,
+        uint _daystodeposit,
+        uint256 _enddate
+
     ) public {
-        uint _sold = 0;
+        uint _balanceowner = 0,
+        uint _balancetaker = 0;
         contracts[contractsLength] = Contract(
-            payable(msg.sender),
-            _name,
-            _image,
-            _description,
-            _location,
-            _price,
-            _sold
+            payable(msg.owner),
+            payable(msg.taker),
+        _contractname,
+        _token,
+        _preagreementowner,
+        _preagreementtaker,
+        _agreementtaker,
+        _daystowithdraw,
+        _daystodeposit,
+        _enddate,
+        _balanceowner,
+        _balancetaker
+
         );
         contractsLength++;
     }
 
     function readContract(uint _index) public view returns (
         address payable,
-        string memory, 
-        string memory, 
-        string memory, 
-        string memory, 
-        uint, 
-        uint
+        address payable,
+        string memory,
+        string memory,
+        uint,
+        uint,
+        uint,
+        uint,
+        uint,
+        uint,
+        uint,
+        uint256
     ) {
         return (
             contracts[_index].owner,
-            contracts[_index].name, 
-            contracts[_index].image, 
-            contracts[_index].description, 
-            contracts[_index].location, 
-            contracts[_index].price,
-            contracts[_index].sold
+            contracts[_index].taker, 
+            contracts[_index].contractname, 
+            contracts[_index].token, 
+            contracts[_index].balanceowner, 
+            contracts[_index].balancetaker,
+            contracts[_index].preagreementowner,
+            contracts[_index].preagreementtaker, 
+            contracts[_index].agreementtaker, 
+            contracts[_index].daystowithdraw,
+            contracts[_index].daystodeposit,
+            contracts[_index].enddate
         );
     }
 
@@ -93,4 +114,14 @@ contract ContractPool {
     function getContractsLength() public view returns (uint) {
         return (contractsLength);
     }
+
+    function addContract
+
+    function withdrawContract
+
+    function burnContract
+
+    function changeContract
+
+    function execContract
 }
