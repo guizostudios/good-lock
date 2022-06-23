@@ -138,5 +138,12 @@ contract ContractPool {
         contracts[_index].balancetaker =    contracts[_index].balancetaker + contracts[_index].deposit;
     }
 
+    function withdrawContract
+
+    function burnContract
+
+    function changeContract
+
+    function execContract
 
 }
